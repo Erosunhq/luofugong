@@ -102,9 +102,14 @@ public class ShowPic extends AppCompatActivity {
                 imageView = new ZoomImageView(getApplicationContext());
 
                 /*
-                * 能不能用Picasso来实现显示大图? 能      代替 setImageURI         * */
+                * 控制ViewPager的数量最多为5个
+                * */
+                int i = position % 5;
+
+                /*
+                * 用Picasso来实现显示大图      代替 setImageURI         * */
                 Picasso.with(ShowPic.this)
-                        .load(new File(imagePathListArray.get(position)))
+                        .load(new File(imagePathListArray.get(i)))
                         .fit()
                         .error(R.mipmap.error)
                         .centerInside()
@@ -115,7 +120,7 @@ public class ShowPic extends AppCompatActivity {
                 /*imageView.setImageURI(Uri.parse(imagePathListArray.get(position)));*/
 
                 container.addView(imageView);
-                mImageViews[position] = imageView;
+                mImageViews[i] = imageView;
                 onDetachedFromWindow();
                 return imageView;
             }
@@ -126,7 +131,11 @@ public class ShowPic extends AppCompatActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                container.removeView(mImageViews[position]);
+                /*
+                * 控制ViewPager的数量最多为5个
+                * */
+                int i = position % 5;
+                container.removeView(mImageViews[i]);
             }
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {

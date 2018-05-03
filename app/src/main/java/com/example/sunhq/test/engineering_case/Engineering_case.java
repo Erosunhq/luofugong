@@ -188,7 +188,7 @@ public class Engineering_case extends AppCompatActivity {
                     Picasso
                             .with(context)
                             .load(new File(PicList.get(position)))
-                            //.placeholder(R.mipmap.loading_throbber)
+                            .placeholder(R.mipmap.loading_co)
                             .error(R.mipmap.ic_launcher)
                             .resize(305,305)
                             .noFade()

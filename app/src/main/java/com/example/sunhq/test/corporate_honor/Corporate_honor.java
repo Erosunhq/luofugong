@@ -147,7 +147,11 @@ public class Corporate_honor extends AppCompatActivity {
                 convertView = View.inflate(context,R.layout.corporate_honor_item_picasso,null);
             }
             ImageView imageView = (ImageView)convertView;
-            if (TextUtils.isEmpty(PicList.get(position))){
+            /*
+                * 控制ViewPager的数量最多为5个
+                * */
+            int i = position % 9;
+            if (TextUtils.isEmpty(PicList.get(i))){
                 Picasso
                         .with(context)
                         .cancelRequest(imageView);
@@ -156,7 +160,7 @@ public class Corporate_honor extends AppCompatActivity {
                 //加载图片
                 Picasso
                         .with(context)
-                        .load(new File(PicList.get(position)))
+                        .load(new File(PicList.get(i)))
                         .placeholder(R.mipmap.loading_co)
                         .error(R.mipmap.ic_launcher)
                         .resize(300,280)   //这几个Picasso都要待修改

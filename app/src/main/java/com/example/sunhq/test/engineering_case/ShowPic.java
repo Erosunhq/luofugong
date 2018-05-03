@@ -92,8 +92,13 @@ public class ShowPic extends AppCompatActivity {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
                 imageView = new ZoomImageView(getApplicationContext());
+                /*
+                * 控制ViewPager的数量最多为5个
+                * */
+                int i = position % 5;
+
                 Picasso.with(ShowPic.this)
-                        .load(new File(imagePathListArray.get(position)))
+                        .load(new File(imagePathListArray.get(i)))
                         .fit()
                         .error(R.mipmap.error)
                         .centerInside()
@@ -101,7 +106,7 @@ public class ShowPic extends AppCompatActivity {
                         .into(imageView);
                 /*imageView.setImageURI(Uri.parse(imagePathListArray.get(position)));*/
                 container.addView(imageView);
-                mImageViews[position] = imageView;
+                mImageViews[i] = imageView;
                 onDetachedFromWindow();
                 return imageView;
             }
@@ -112,7 +117,11 @@ public class ShowPic extends AppCompatActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                container.removeView(mImageViews[position]);
+                /*
+                * 控制ViewPager的数量最多为5个
+                * */
+                int i = position % 5;
+                container.removeView(mImageViews[i]);
             }
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {
