@@ -400,8 +400,6 @@ public class Home_display extends ActionBarActivity implements View.OnClickListe
         private List<String> mData;
         private PopupWindow mPopupWindow;
 
-
-
         public ListViewAdapter(Context context, List<String> data, PopupWindow popupWindow) {
             mContext = context;
             mData = data;
@@ -478,6 +476,11 @@ public class Home_display extends ActionBarActivity implements View.OnClickListe
             TextView mTextView;
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        gridView.setBackgroundResource(0);
+        gridView = null;
+    }
 
 }

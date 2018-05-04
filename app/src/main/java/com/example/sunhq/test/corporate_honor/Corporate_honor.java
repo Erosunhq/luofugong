@@ -4,8 +4,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.view.Display;
@@ -30,7 +33,7 @@ import java.util.List;
 /**
  * Created by Sunhq on 2018/3/30.
  */
-public class Corporate_honor extends AppCompatActivity {
+public class Corporate_honor extends AppCompatActivity implements View.OnClickListener {
 
     Button corporate_honor_back;  //页面左下角返回按钮
     Button corporate_honor; // 右边两个按钮
@@ -41,6 +44,31 @@ public class Corporate_honor extends AppCompatActivity {
 
     List<String> PicList = new ArrayList<String>();
     GetImagePath imagePath;
+
+    ImageView image_tech = null;
+
+    //异步消息处理
+    public static final int CORPORATE_HONOR = 1;
+    private Handler handler = new Handler(){
+        @Override
+        public void handleMessage(Message msg) {
+            super.handleMessage(msg);
+            switch (msg.what){
+                case CORPORATE_HONOR:
+                    technical_parameter.setBackgroundResource(R.mipmap.technical_parameter_unchosed);
+                    corporate_honor.setBackgroundResource(R.mipmap.corporate_honor_chosed);
+                    imagePath = new GetImagePath("image"); // 这里依据传入的字符串不同,方法获得不同的文件夹,展示不同的图片
+                    PicList =  imagePath.getImagePathFromSD();
+                    gridView.setAdapter(new ImageListAdapter(Corporate_honor.this,PicList));
+                    gridView.setVisibility(View.VISIBLE);
+                    image_tech.setVisibility(View.INVISIBLE);
+                    break;
+                default:
+                    break;
+            }
+
+        }
+    };
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +99,7 @@ public class Corporate_honor extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 finish();
+               // System.exit(0);
             }
         }); //返回到上一界面
 
@@ -79,9 +108,10 @@ public class Corporate_honor extends AppCompatActivity {
         /*
          * 技术参数的按钮
          * */
-        final ImageView image_tech = (ImageView) findViewById(R.id.image_tech);
+        image_tech = (ImageView) findViewById(R.id.image_tech);
         technical_parameter = (Button) findViewById(R.id.technical_parameter);
         technical_parameter.setBackgroundResource(R.mipmap.technical_parameter_chosed);
+        technical_parameter.setOnClickListener(this);
         technical_parameter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -98,19 +128,8 @@ public class Corporate_honor extends AppCompatActivity {
          * 企业荣誉的按钮
          * */
         corporate_honor = (Button) findViewById(R.id.corporate_honor);
-        corporate_honor.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                technical_parameter.setBackgroundResource(R.mipmap.technical_parameter_unchosed);
-                corporate_honor.setBackgroundResource(R.mipmap.corporate_honor_chosed);
-                imagePath = new GetImagePath("image"); // 这里依据传入的字符串不同,方法获得不同的文件夹,展示不同的图片
-                PicList =  imagePath.getImagePathFromSD();
-                gridView.setAdapter(new ImageListAdapter(Corporate_honor.this,PicList));
-                gridView.setVisibility(View.VISIBLE);
-                image_tech.setVisibility(View.INVISIBLE);
+        corporate_honor.setOnClickListener(this);
 
-            }
-        });
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -125,6 +144,24 @@ public class Corporate_honor extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.corporate_honor:
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Message message = new Message();
+                        message.what = CORPORATE_HONOR;
+                        handler.sendMessage(message); // 将Message对象发送出去
+                    }
+                }).start();
+                break;
+            default:
+                break;
+        }
     }
 
     /**
@@ -163,6 +200,7 @@ public class Corporate_honor extends AppCompatActivity {
                         .load(new File(PicList.get(i)))
                         .placeholder(R.mipmap.loading_co)
                         .error(R.mipmap.error)
+                        .config(Bitmap.Config.RGB_565)
                         .resize(300,280)   //这几个Picasso都要待修改
                         .noFade()
                         .into((ImageView) convertView);
@@ -172,6 +210,13 @@ public class Corporate_honor extends AppCompatActivity {
         }
     }
 
-
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
+        gridView.setBackgroundResource(0);
+        bitmapDrawable.setCallback(null);
+        bitmapDrawable.getBitmap().recycle();
+        gridView = null;
+    }
 }
