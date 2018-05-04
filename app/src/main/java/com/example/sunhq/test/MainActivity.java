@@ -177,7 +177,7 @@ public class MainActivity extends AppCompatActivity {
                                                 Log.d(TAG, "-----下载---" + downProcess + "%");
 
                                             }
-                                            downProcess = 0;   //对不同的文件,进度重新置0
+                                            downProcess = 0;   //对不同的文件夹,进度重新置0
                                         }
                                     });
                                     if (i == serverPath.length) {
