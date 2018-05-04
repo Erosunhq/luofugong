@@ -189,7 +189,7 @@ public class Engineering_case extends AppCompatActivity {
                             .with(context)
                             .load(new File(PicList.get(position)))
                             .placeholder(R.mipmap.loading_co)
-                            .error(R.mipmap.ic_launcher)
+                            .error(R.mipmap.error)
                             .resize(305,305)
                             .noFade()
                             .into((ImageView) convertView);

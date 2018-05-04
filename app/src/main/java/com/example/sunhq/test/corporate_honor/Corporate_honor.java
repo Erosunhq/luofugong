@@ -162,7 +162,7 @@ public class Corporate_honor extends AppCompatActivity {
                         .with(context)
                         .load(new File(PicList.get(i)))
                         .placeholder(R.mipmap.loading_co)
-                        .error(R.mipmap.ic_launcher)
+                        .error(R.mipmap.error)
                         .resize(300,280)   //这几个Picasso都要待修改
                         .noFade()
                         .into((ImageView) convertView);

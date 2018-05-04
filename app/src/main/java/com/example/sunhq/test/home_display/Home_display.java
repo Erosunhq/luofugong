@@ -474,7 +474,6 @@ public class Home_display extends ActionBarActivity implements View.OnClickListe
             return convertView;
         }
 
-
          class ViewHolder {
             TextView mTextView;
         }
