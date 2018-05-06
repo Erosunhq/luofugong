@@ -98,7 +98,7 @@ public class ShowPic extends AppCompatActivity {
                 int i = position % 5;
 
                 Picasso.with(ShowPic.this)
-                        .load(new File(imagePathListArray.get(i)))
+                        .load(new File(imagePathListArray.get(position)))
                         .fit()
                         .error(R.mipmap.error)
                         .centerInside()

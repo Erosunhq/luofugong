@@ -23,6 +23,7 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageView;
 
+import com.bumptech.glide.Glide;
 import com.example.sunhq.test.R;
 import com.squareup.picasso.Picasso;
 
@@ -84,14 +85,13 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
         imageViewLogo = (ImageView) findViewById(R.id.logo_home);
        // String getPath_logo = Environment.getExternalStorageDirectory() + "/images/logomax_nomargin.png";
         //加载屏幕左边的logo
-        int resourceId = R.mipmap.logomax_nomargin;
-        Picasso.with(this)
-                .load(resourceId)
+        Glide.with(this)
+                .load(R.mipmap.logomax_nomargin)
                 //.placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.error)
-                .fit()
-                .tag("image")
                 .into(imageViewLogo);
+
+
 
 
         corporate_honor_back = (Button) findViewById(R.id.corporate_honor_back);
@@ -110,8 +110,7 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
          * */
         image_tech = (ImageView) findViewById(R.id.image_tech);
         technical_parameter = (Button) findViewById(R.id.technical_parameter);
-        technical_parameter.setBackgroundResource(R.mipmap.technical_parameter_chosed);
-        technical_parameter.setOnClickListener(this);
+
         technical_parameter.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -119,8 +118,6 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
                 corporate_honor.setBackgroundResource(R.mipmap.corporate_honor_unchosed);
                 gridView.setVisibility(View.INVISIBLE);
                 image_tech.setVisibility(View.VISIBLE);
-
-
             }
         });
 
@@ -128,6 +125,8 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
          * 企业荣誉的按钮
          * */
         corporate_honor = (Button) findViewById(R.id.corporate_honor);
+
+        assert corporate_honor != null;
         corporate_honor.setOnClickListener(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -187,8 +186,8 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
             /*
                 * 控制ViewPager的数量最多为5个
                 * */
-            int i = position % 9;
-            if (TextUtils.isEmpty(PicList.get(i))){
+            //int i = position % 9;
+            if (TextUtils.isEmpty(PicList.get(position))){
                 Picasso
                         .with(context)
                         .cancelRequest(imageView);
@@ -197,7 +196,7 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
                 //加载图片
                 Picasso
                         .with(context)
-                        .load(new File(PicList.get(i)))
+                        .load(new File(PicList.get(position)))
                         .placeholder(R.mipmap.loading_co)
                         .error(R.mipmap.error)
                         .config(Bitmap.Config.RGB_565)
@@ -212,11 +211,10 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
+       // BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
         gridView.setBackgroundResource(0);
-        bitmapDrawable.setCallback(null);
-        bitmapDrawable.getBitmap().recycle();
-        gridView = null;
+       // bitmapDrawable.setCallback(null);
+        //bitmapDrawable.getBitmap().recycle();
+        super.onDestroy();
     }
 }

@@ -109,7 +109,7 @@ public class ShowPic extends AppCompatActivity {
                 /*
                 * 用Picasso来实现显示大图      代替 setImageURI         * */
                 Picasso.with(ShowPic.this)
-                        .load(new File(imagePathListArray.get(i)))
+                        .load(new File(imagePathListArray.get(position)))
                         .fit()
                         .error(R.mipmap.error)
                         .centerInside()
@@ -149,5 +149,10 @@ public class ShowPic extends AppCompatActivity {
         });
 
            mViewPager.setCurrentItem(currentItem); //初始化  刚开始选中的哪张图片,一定要放在这个位置
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 }

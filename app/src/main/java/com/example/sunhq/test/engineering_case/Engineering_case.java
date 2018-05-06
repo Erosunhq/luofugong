@@ -145,20 +145,14 @@ public class Engineering_case extends AppCompatActivity implements View.OnClickL
         technical_parameter3 = (Button) findViewById(R.id.technical_parameter3);
         technical_parameter4 = (Button) findViewById(R.id.technical_parameter4);
 
-
-
-
-            technical_parameter1.setOnClickListener(this);
-            technical_parameter2.setOnClickListener(this);
-            technical_parameter3.setOnClickListener(this);
-            technical_parameter4.setOnClickListener(this);
-
-
+        technical_parameter1.setOnClickListener(this);
+        technical_parameter2.setOnClickListener(this);
+        technical_parameter3.setOnClickListener(this);
+        technical_parameter4.setOnClickListener(this);
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                //Toast.makeText(MainActivity.this,"position =  "+position,Toast.LENGTH_SHORT).show();
                 Bundle bundle = new Bundle();
                 bundle.putStringArrayList("PicListArray", (ArrayList<String>) PicList);
                 bundle.putStringArray("PicList", new String[]{PicList.get(position)});
@@ -265,11 +259,13 @@ public class Engineering_case extends AppCompatActivity implements View.OnClickL
     }
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
+
+        //BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
         gridView.setBackgroundResource(0);
-        bitmapDrawable.setCallback(null);
-        bitmapDrawable.getBitmap().recycle();
-        gridView = null;
+        //bitmapDrawable.setCallback(null);
+        //bitmapDrawable.getBitmap().recycle();
+        super.onDestroy();
     }
+
+
 }

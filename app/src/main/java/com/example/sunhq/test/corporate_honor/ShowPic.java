@@ -6,20 +6,24 @@ import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.example.sunhq.test.R;
 import com.example.sunhq.test.home_display.sliding_effect.ZoomOutPageTransformer;
 import com.squareup.picasso.MemoryPolicy;
 import com.squareup.picasso.Picasso;
 
 import java.io.File;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 
 /**
@@ -87,6 +91,8 @@ public class ShowPic extends AppCompatActivity {
         //mViewPager.setPageTransformer(true,new DepthPageTransformer());
         mViewPager.setPageTransformer(true,new ZoomOutPageTransformer());
         /****************************************************************/
+
+       // mViewPager.setOffscreenPageLimit(3);      //效果不明显,不知是否有用
         mViewPager.setAdapter(new PagerAdapter() {
             @Override
             public Object instantiateItem(ViewGroup container, int position) {
@@ -96,7 +102,7 @@ public class ShowPic extends AppCompatActivity {
                 * */
                 int i = position % 5;
                 Picasso.with(ShowPic.this)
-                        .load(new File(imagePathListArray.get(i)))
+                        .load(new File(imagePathListArray.get(position)))
                         .fit()
                         .error(R.mipmap.error)
                         .centerInside()
@@ -115,11 +121,22 @@ public class ShowPic extends AppCompatActivity {
             @Override
             public void destroyItem(ViewGroup container, int position,
                                     Object object) {
-                /*
-                * 控制ViewPager的数量最多为5个
-                * */
-                int i = position % 5;
-                container.removeView(mImageViews[i]);
+
+                /*Log.d("Corporate_honor", "destroyItem******************************************************:"+object);
+
+                container.removeView((View) object);
+
+                ImageView mImageView=mImageViews[position];
+                if (mImageView != null) {
+                    mImageView = null;
+                }
+               // 将多余的页面销毁.减少内在的占用.*/
+                imageView = (ZoomImageView) object;
+                if (imageView == null){
+                    return;
+                }
+                Glide.clear(imageView);   //核心,解决OOM
+                container.removeView(imageView);
             }
             @Override
             public boolean isViewFromObject(View arg0, Object arg1) {
@@ -131,6 +148,7 @@ public class ShowPic extends AppCompatActivity {
                 return mImageViews.length;
             }
         });
+
 
            mViewPager.setCurrentItem(currentItem); //初始化  刚开始选中的哪张图片
     }
