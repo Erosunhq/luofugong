@@ -114,16 +114,16 @@ public class Engineering_case extends AppCompatActivity implements View.OnClickL
             });
         }
 
-        ImageView imageView = (ImageView) findViewById(R.id.logo_home);
-        //加载屏幕左边的logo
-        int resourceId = R.mipmap.logomax_nomargin;
-        Picasso.with(this)
-                .load(resourceId)
-                //.placeholder(R.mipmap.ic_launcher)
-                .error(R.mipmap.ic_launcher)
-                .fit()
-                .tag("image")
-                .into(imageView);
+//        ImageView imageView = (ImageView) findViewById(R.id.logo_home);
+//        //加载屏幕左边的logo
+//        int resourceId = R.mipmap.logomax_nomargin;
+//        Picasso.with(this)
+//                .load(resourceId)
+//                //.placeholder(R.mipmap.ic_launcher)
+//                .error(R.mipmap.ic_launcher)
+//                .fit()
+//                .tag("image")
+//                .into(imageView);
 
         gridView = (GridView) findViewById(R.id.gridView);
 
@@ -260,10 +260,14 @@ public class Engineering_case extends AppCompatActivity implements View.OnClickL
     @Override
     protected void onDestroy() {
 
-        //BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
         gridView.setBackgroundResource(0);
-        //bitmapDrawable.setCallback(null);
-        //bitmapDrawable.getBitmap().recycle();
+        bitmapDrawable.setCallback(null);
+        try{
+            bitmapDrawable.getBitmap().recycle();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 

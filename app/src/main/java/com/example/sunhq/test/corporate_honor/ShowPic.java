@@ -1,6 +1,8 @@
 package com.example.sunhq.test.corporate_honor;
 
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.view.PagerAdapter;
@@ -152,4 +154,24 @@ public class ShowPic extends AppCompatActivity {
 
            mViewPager.setCurrentItem(currentItem); //初始化  刚开始选中的哪张图片
     }
+
+    @Override
+    protected void onDestroy() {
+
+        if (imageView == null) return;
+        Drawable drawable = imageView.getDrawable();
+        if (drawable != null && drawable instanceof BitmapDrawable) {
+            BitmapDrawable bitmapDrawable = (BitmapDrawable) drawable;
+            Bitmap bitmap = bitmapDrawable.getBitmap();
+            if (bitmap != null && !bitmap.isRecycled()) {
+                bitmap.recycle();
+                bitmap=null;
+            }
+        }
+        System.gc();
+
+        super.onDestroy();
+    }
+
+
 }

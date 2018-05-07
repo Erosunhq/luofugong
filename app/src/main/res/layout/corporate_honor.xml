@@ -13,7 +13,7 @@
         app:layout_widthPercent="24.44%"
         app:layout_marginLeftPercent = "2.96%"
         app:layout_marginTopPercent="19.74%"
-        />
+        android:background="@mipmap/logomax_nomargin"/>
 
     <Button
         android:id="@+id/corporate_honor"

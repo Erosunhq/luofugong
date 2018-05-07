@@ -40,7 +40,6 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
     Button corporate_honor; // 右边两个按钮
     Button technical_parameter;
 
-    ImageView imageViewLogo; // 左边的logo
     GridView gridView;
 
     List<String> PicList = new ArrayList<String>();
@@ -82,17 +81,14 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
         setContentView(R.layout.corporate_honor);
 
 
-        imageViewLogo = (ImageView) findViewById(R.id.logo_home);
+        /*imageViewLogo = (ImageView) findViewById(R.id.logo_home);
        // String getPath_logo = Environment.getExternalStorageDirectory() + "/images/logomax_nomargin.png";
         //加载屏幕左边的logo
         Glide.with(this)
                 .load(R.mipmap.logomax_nomargin)
                 //.placeholder(R.mipmap.ic_launcher)
                 .error(R.mipmap.error)
-                .into(imageViewLogo);
-
-
-
+                .into(imageViewLogo);*/
 
         corporate_honor_back = (Button) findViewById(R.id.corporate_honor_back);
         corporate_honor_back.setOnClickListener(new View.OnClickListener() {
@@ -183,10 +179,7 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
                 convertView = View.inflate(context,R.layout.corporate_honor_item_picasso,null);
             }
             ImageView imageView = (ImageView)convertView;
-            /*
-                * 控制ViewPager的数量最多为5个
-                * */
-            //int i = position % 9;
+
             if (TextUtils.isEmpty(PicList.get(position))){
                 Picasso
                         .with(context)
@@ -211,10 +204,14 @@ public class Corporate_honor extends AppCompatActivity implements View.OnClickLi
 
     @Override
     protected void onDestroy() {
-       // BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
+        BitmapDrawable bitmapDrawable = (BitmapDrawable) gridView.getBackground();
         gridView.setBackgroundResource(0);
-       // bitmapDrawable.setCallback(null);
-        //bitmapDrawable.getBitmap().recycle();
+        bitmapDrawable.setCallback(null);
+        try{
+            bitmapDrawable.getBitmap().recycle();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         super.onDestroy();
     }
 }
